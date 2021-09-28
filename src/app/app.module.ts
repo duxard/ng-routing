@@ -3,13 +3,19 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { PostsComponent } from './components/posts/posts.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PostComponent } from './components/post/post.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
-    NavbarComponent
+    NavbarComponent,
+    PostsComponent,
+    PageNotFoundComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
