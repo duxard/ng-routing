@@ -1,27 +1,113 @@
 # NgRouting
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.3.
+Add routes:
+```javascript
+const routes: Routes = [
+  { path: '', redirectTo: '/one', pathMatch: 'full' },
+  { path: 'one', component: OneComponent },
+  { path: 'two', component: TwoComponent },
+  { path: 'three', component: ThreeComponent },
+  { path: 'four', component: FourComponent },
+  { path: 'posts', component: PostsComponent },
+  { path: 'posts/:id', component: PostComponent },
 
-## Development server
+  // child routes:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+  { path: 'about', component: AboutComponent, children: [
+      { path: 'extra', component: AboutExtraComponent }
+    ]
+  },
+  { path: '**', component: PageNotFoundComponent }
+];
 
-## Code scaffolding
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+Add navigation (navbar):
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+````
+<ul class="navbar-main">
+  <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/one" >One</a></li>
+  <li routerLinkActive="active"><a routerLink="/two">Two</a></li>
+  <li routerLinkActive="active"><a [routerLink]="['/three']">Three</a></li>
+  <li routerLinkActive="active"><a [routerLink]="['/four']">Four</a></li>
+  <li routerLinkActive="active"><a [routerLink]="['/posts']">Posts</a></li>
+  <li routerLinkActive="active"><a [routerLink]="['/about']">About</a></li>
+</ul>
+````
 
-## Build
+Navigate to some location (via method):
+````
+<button (click)="goToTwoPage()">Go to Two Page</button>
+...
+export class OneComponent {
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+  constructor(private router: Router) { }
 
-## Running unit tests
+  goToTwoPage(): void {
+    this.router.navigate(['/two']);
+  }
+}
+````
+Navigate to some location (via link):
+````
+<a [routerLink]="['/one']">Go to home page</a>
+````
+Add param to url 
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+http://localhost:4200/posts?showIDs=true 
 
-## Running end-to-end tests
+Add fragment to url (#)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+http://localhost:4200/posts?showIDs=true#program-fragment
+````
+<button [routerLink]="['/posts']" [queryParams]="{showIDs: true}">Show IDs</button>
+<button (click)="showIdProgrammatically()">Show IDs (programmatically</button>
+...
+export class PostsComponent implements OnInit {
 
-## Further help
+  showIDs = false;
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+  constructor(
+    private activateRoute: ActivatedRoute,
+    private router: Router
+  ) { }
+
+  ngOnInit(): void {
+    this.activateRoute.queryParams.subscribe((params: Params) => {
+      this.showIDs = !!params.showIDs;
+    });
+    this.activateRoute.fragment.subscribe(fragment => console.log(fragment));
+  }
+
+    showIdProgrammatically(): void {
+        this.router.navigate(['/posts'], {
+          // http://localhost:4200/posts?showIDs=true
+          queryParams: {showIDs: true},
+          // http://localhost:4200/posts?showIDs=true#program-fragment
+          fragment: 'program-fragment'
+        });
+    }
+}
+````
+Get param from ulr:
+````
+export class PostComponent implements OnInit {
+
+  constructor(
+    private activateRoute: ActivatedRoute,
+  ) { }
+
+  ngOnInit(): void {
+    this.activateRoute.params.subscribe((params: Params) => {
+
+      // http://localhost:4200/post/11 -> "11" is a param
+      //  { path: 'posts/:id', component: PostComponent }
+      console.log(params.id);
+    });
+  }
+}
+````

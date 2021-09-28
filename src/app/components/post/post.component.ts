@@ -1,15 +1,31 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Post, PostsService } from '../posts/posts.service';
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
-  styleUrls: ['./post.component.scss']
+  styleUrls: ['./post.component.scss'],
+  providers: [PostsService]
 })
 export class PostComponent implements OnInit {
 
-  constructor() { }
+  post: Post;
+
+  constructor(
+    private activateRoute: ActivatedRoute,
+    private postsService: PostsService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.activateRoute.params.subscribe((params: Params) => {
+      console.log(params);
+      this.post = this.postsService.getPostById(+params.id);
+    });
   }
 
+  onBackToPostsClick(): void {
+    this.router.navigate(['/posts']);
+  }
 }

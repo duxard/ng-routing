@@ -7,6 +7,8 @@ import { FourComponent } from './components/four/four.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { PostComponent } from './components/post/post.component';
+import { AboutComponent } from './components/about/about.component';
+import { AboutExtraComponent } from './components/about-extra/about-extra.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/one', pathMatch: 'full' },
@@ -16,6 +18,10 @@ const routes: Routes = [
   { path: 'four', component: FourComponent },
   { path: 'posts', component: PostsComponent },
   { path: 'posts/:id', component: PostComponent },
+  { path: 'about', component: AboutComponent, children: [
+      { path: 'extra', component: AboutExtraComponent }
+    ]
+  },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -33,5 +39,7 @@ export const routingComponents = [
   FourComponent,
   PostsComponent,
   PostComponent,
-  PageNotFoundComponent
+  PageNotFoundComponent,
+  AboutComponent,
+  AboutExtraComponent
 ];

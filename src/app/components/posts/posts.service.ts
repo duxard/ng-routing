@@ -18,4 +18,8 @@ export class PostsService {
   getPosts(): Post[] {
     return this.posts;
   }
+
+  getPostById(id: number): Post  {
+    return this.posts.find(post => (post.id === id));
+  }
 }

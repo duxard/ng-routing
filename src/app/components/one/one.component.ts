@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,17 +6,13 @@ import { Router } from '@angular/router';
   templateUrl: './one.component.html',
   styleUrls: ['./one.component.scss']
 })
-export class OneComponent implements OnInit {
+export class OneComponent {
 
   constructor(private router: Router) { }
-
-  ngOnInit(): void {
-  }
 
   goToTwoPage(): void {
     this.router.navigate(['/two'])
       .then(() => console.log('success'))
       .catch(error => console.log(error));
   }
-
 }

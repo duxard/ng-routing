@@ -1,8 +1,10 @@
 <h1>Posts</h1>
+<button [routerLink]="['/posts']" [queryParams]="{showIDs: true}">Show IDs</button>
+<button (click)="showIdProgrammatically()">Show IDs (programmatically</button>
 <ul>
   <li *ngFor="let post of posts">
     <a [routerLink]="['/posts', post.id]">
-      <strong>(ID: {{post.id}}) </strong>
+      <strong *ngIf="showIDs">(ID: {{post.id}}) </strong>
       <span>{{post.title}}</span>
     </a>
   </li>
