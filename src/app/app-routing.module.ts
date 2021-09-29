@@ -8,8 +8,10 @@ import { PostsComponent } from './components/posts/posts.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { PostComponent } from './components/post/post.component';
 import { AboutComponent } from './components/about/about.component';
-import { AboutExtraComponent } from './components/about-extra/about-extra.component';
+import { AboutExtraComponent } from './components/about/about-extra/about-extra.component';
 import { AuthGuard } from './guards/auth.guard';
+import { MainComponent } from './components/modules-training/main/main.component';
+import { SecondaryModule } from './components/modules-training/secondary/secondary.module';
 
 const routes: Routes = [
   { path: '', redirectTo: '/one', pathMatch: 'full' },
@@ -17,6 +19,9 @@ const routes: Routes = [
   { path: 'two', component: TwoComponent },
   { path: 'three', component: ThreeComponent },
   { path: 'four', component: FourComponent },
+
+  // work with modules
+  { path: 'main', component: MainComponent },
 
   // protected route
   { path: 'posts', component: PostsComponent, canActivate: [AuthGuard] },
@@ -33,8 +38,14 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  imports: [
+    SecondaryModule,
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+    SecondaryModule,
+    RouterModule
+  ],
   providers: [AuthGuard]
 })
 export class AppRoutingModule { }
@@ -49,5 +60,6 @@ export const routingComponents = [
   PostComponent,
   PageNotFoundComponent,
   AboutComponent,
-  AboutExtraComponent
+  AboutExtraComponent,
+  MainComponent
 ];
