@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { PostComponent } from './components/post/post.component';
 import { AboutComponent } from './components/about/about.component';
 import { AboutExtraComponent } from './components/about-extra/about-extra.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/one', pathMatch: 'full' },
@@ -16,9 +17,15 @@ const routes: Routes = [
   { path: 'two', component: TwoComponent },
   { path: 'three', component: ThreeComponent },
   { path: 'four', component: FourComponent },
-  { path: 'posts', component: PostsComponent },
+
+  // protected route
+  { path: 'posts', component: PostsComponent, canActivate: [AuthGuard] },
+
+  // route with params
   { path: 'posts/:id', component: PostComponent },
-  { path: 'about', component: AboutComponent, children: [
+
+  // route with protected child routes
+  { path: 'about', component: AboutComponent, canActivateChild: [AuthGuard], children: [
       { path: 'extra', component: AboutExtraComponent }
     ]
   },
@@ -27,7 +34,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }
 
